@@ -1,0 +1,31 @@
+{
+  "workspaces": [
+    "apps/*"
+  ],
+  "name": "dtc-starter-monorepo",
+  "private": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "start": "turbo start",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "backend:seed": "npm run seed --workspace=apps/backend",
+    "backend:dev": "npm run dev --workspace=apps/backend",
+    "storefront:dev": "npm run dev --workspace=apps/storefront",
+    "docker:up": "docker compose up --build -d",
+    "docker:down": "docker compose down"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.14",
+    "prettier": "^3.2.5"
+  },
+  "overrides": {
+    "ajv": "^8.0.0",
+    "@types/react": "19.0.5",
+    "@types/react-dom": "19.0.5"
+  }
+}
