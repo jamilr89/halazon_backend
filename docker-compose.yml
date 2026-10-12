@@ -41,7 +41,7 @@ services:
       - "5173:5173"
     environment:
     - NODE_PATH=/server/apps/backend/node_modules
-    - NODE_ENV=development
+    - NODE_ENV=production
     - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}?max=5&idle_timeout=30
     - REDIS_URL=redis://redis:6379
     env_file:
