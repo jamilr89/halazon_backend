@@ -14,5 +14,6 @@ RUN npm install --legacy-peer-deps
 RUN cd apps/backend && npm install --legacy-peer-deps
 
 EXPOSE 9000 5173 8000
+RUN npm run build --workspace=@dtc/backend
 
 ENTRYPOINT ["./start.sh"]
