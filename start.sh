@@ -11,4 +11,4 @@ npm run seed || echo "Seeding failed, continuing..."
 
 npm run build
 npm run start
-docker ps | grep storefront
+# docker ps | grep storefront
