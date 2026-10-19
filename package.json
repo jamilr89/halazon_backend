@@ -20,12 +20,15 @@
     "docker:down": "docker compose down"
   },
   "devDependencies": {
-    "turbo": "^2.0.14",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "turbo": "^2.0.14"
   },
   "overrides": {
     "ajv": "^8.0.0",
     "@types/react": "19.0.5",
     "@types/react-dom": "19.0.5"
+  },
+  "dependencies": {
+    "@medusajs/ui": "4.1.15"
   }
 }

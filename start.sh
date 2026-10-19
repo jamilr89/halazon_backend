@@ -15,13 +15,20 @@
 
 
 #!/bin/sh
-set -e
+# set -e
 
-cd /server/apps/backend
+# cd /server/apps/backend
 
-echo "Running database migrations..."
-npx medusa db:migrate
+# echo "Running database migrations..."
+# npx medusa db:migrate
 
-echo "Starting Medusa..."
-cd .medusa/server
-exec npm run start
+# echo "Starting Medusa..."
+# cd .medusa/server
+# exec npm run start
+
+
+   set -e
+   cd /server/apps/backend
+   npx medusa db:migrate
+   cd .medusa/server
+   exec npm run start

@@ -1,7 +1,10 @@
 # Dependencies
 node_modules
+ **/node_modules
 .pnp
 .pnp.js
+
+**/.medusa
 
 # Yarn 2+
 .yarn/*
@@ -33,6 +36,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Local env files
+.env
 **/.env
 **/.env.local
 **/.env.development.local
