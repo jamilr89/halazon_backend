@@ -58,6 +58,11 @@
   
   "resolutions": {
     "@aws-sdk/client-s3": "3.726.1"
+  },
+  
+  "overrides": {
+    "@aws-sdk/client-s3": "3.726.1"
   }
+
 }
   
