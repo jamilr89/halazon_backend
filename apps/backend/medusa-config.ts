@@ -49,6 +49,24 @@ module.exports = defineConfig({
       ],
     },
   },
+  {
+    resolve: "@medusajs/medusa/notification",
+    options: {
+      providers: [
+        {
+          resolve: "./src/modules/ses-notification",
+          id: "ses",
+          options: {
+            channels: ["email"],
+            region: process.env.AWS_REGION,
+            access_key_id: process.env.AWS_ACCESS_KEY_ID,
+            secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
+            from: process.env.SES_FROM,
+          },
+        },
+      ],
+    },
+  },
   ],
   featureFlags: {
     translation: true,
