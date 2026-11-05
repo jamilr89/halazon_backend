@@ -2,6 +2,7 @@ import { AbstractNotificationProviderService, MedusaError } from "@medusajs/fram
 import type {
   ProviderSendNotificationDTO,
   ProviderSendNotificationResultsDTO,
+  Logger,
 } from "@medusajs/framework/types"
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2"
 
@@ -12,13 +13,19 @@ type Options = {
   from: string
 }
 
+type InjectedDependencies = {
+  logger: Logger
+}
+
 export class SesNotificationProviderService extends AbstractNotificationProviderService {
   static identifier = "notification-ses"
   protected client_: SESv2Client
   protected from_: string
+  protected logger_: Logger
 
-  constructor(_deps: Record<string, unknown>, options: Options) {
+  constructor({ logger }: InjectedDependencies, options: Options) {
     super()
+    this.logger_ = logger
     this.from_ = options.from
     this.client_ = new SESv2Client({
       region: options.region,
@@ -40,22 +47,31 @@ export class SesNotificationProviderService extends AbstractNotificationProvider
       )
     }
 
-    const result = await this.client_.send(
-      new SendEmailCommand({
-        FromEmailAddress: this.from_,
-        Destination: { ToAddresses: [notification.to] },
-        Content: {
-          Simple: {
-            Subject: { Data: subject },
-            Body: {
-              ...(html && { Html: { Data: html } }),
-              ...(text && { Text: { Data: text } }),
+    try {
+      const result = await this.client_.send(
+        new SendEmailCommand({
+          FromEmailAddress: this.from_,
+          Destination: { ToAddresses: [notification.to] },
+          Content: {
+            Simple: {
+              Subject: { Data: subject },
+              Body: {
+                ...(html && { Html: { Data: html } }),
+                ...(text && { Text: { Data: text } }),
+              },
             },
           },
-        },
-      })
-    )
+        })
+      )
 
-    return { id: result.MessageId ?? "" }
+      this.logger_.info(`[SESv2] Email successfully sent to ${notification.to}. Message ID: ${result.MessageId}`)
+      return { id: result.MessageId ?? "" }
+    } catch (error: any) {
+      this.logger_.error(`[SESv2] Failed to send email to ${notification.to}: ${error.message}`)
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to send email via SESv2: ${error.message}`
+      )
+    }
   }
 }

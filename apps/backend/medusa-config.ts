@@ -2,7 +2,7 @@ import { loadEnv, defineConfig } from '@medusajs/framework/utils'
 
 
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
-console.log("Environment variables loaded from .env file"+JSON.stringify(process.env))
+// console.log("Environment variables loaded from .env file"+JSON.stringify(process.env))
 module.exports = defineConfig({
 
   projectConfig: {
