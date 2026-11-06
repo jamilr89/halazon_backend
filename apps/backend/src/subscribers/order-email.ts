@@ -13,25 +13,25 @@ export default async function sendOrderEmailHandler({
 
   try {
     const order = await orderModuleService.retrieveOrder(data.id, {
-      relations: ["items", "shipping_address", "customer"],
+      relations: ["items", "shipping_address"], // Removed "customer" here
     })
 
     logger.info(`[Subscriber] Retrieved order email target: ${order.email}`)
 
-    // Dispatch via Notification Module
-await notificationModuleService.createNotifications({
-  to: order.email,
-  channel: "email",
-  template: "order-placed",
-  content: {
-    subject: `Order Confirmation #${order.display_id}`,
-    html: `<p>Thank you for your order, ${order.shipping_address?.first_name || "Customer"}!</p>`,
-    text: `Thank you for your order, ${order.display_id}`,
-  },
-  data: {
-    order,
-  },
-} as unknown as Parameters<typeof notificationModuleService.createNotifications>[0])
+    // Dispatch via Notification Module with type assertion for DTO compatibility
+    await notificationModuleService.createNotifications({
+      to: order.email,
+      channel: "email",
+      template: "order-placed",
+      content: {
+        subject: `Order Confirmation #${order.display_id}`,
+        html: `<p>Thank you for your order, ${order.shipping_address?.first_name || "Customer"}!</p>`,
+        text: `Thank you for your order, ${order.display_id}`,
+      },
+      data: {
+        order,
+      },
+    } as unknown as Parameters<typeof notificationModuleService.createNotifications>[0])
 
     logger.info(`[Subscriber] Notification module call completed successfully.`)
   } catch (error: any) {
